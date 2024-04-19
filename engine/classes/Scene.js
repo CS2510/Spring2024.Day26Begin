@@ -83,15 +83,18 @@ class Scene {
         // ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2)
 
         let logicalWidth = 20
-        let aspectRatio = 100; //height/width
+        let aspectRatio = 1; //height/width
+        let windowAspectRatio = ctx.canvas.height / ctx.canvas.width;
 
         let letterBox1End;
         let letterBox2Start;
-        if (ctx.canvas.width > ctx.canvas.height) {
-            letterBox1End = (ctx.canvas.width)/2 - (ctx.canvas.height/aspectRatio) / 2;
-            letterBox2Start = (ctx.canvas.width)/2 + (ctx.canvas.height/aspectRatio)/2 ;
+        // if (ctx.canvas.width > ctx.canvas.height) {
+        if (aspectRatio > windowAspectRatio) {
+            // if (ctx.canvas.width > ctx.canvas.height) {
+            letterBox1End = (ctx.canvas.width) / 2 - (ctx.canvas.height / aspectRatio) / 2;
+            letterBox2Start = (ctx.canvas.width) / 2 + (ctx.canvas.height / aspectRatio) / 2;
             ctx.translate(letterBox1End, 0)
-            let scaleFactor = ctx.canvas.height/logicalWidth;
+            let scaleFactor = ctx.canvas.height / logicalWidth;
             ctx.scale(scaleFactor, scaleFactor)
             // letterBox1End = (ctx.canvas.width - ctx.canvas.height) / 2;
             // letterBox2Start = (ctx.canvas.width + ctx.canvas.height) / 2;
@@ -99,11 +102,11 @@ class Scene {
             // let scaleFactor = ctx.canvas.height/logicalWidth;
             // ctx.scale(scaleFactor, scaleFactor)
         }
-        else{
-            letterBox1End = (ctx.canvas.height - ctx.canvas.width) / 2;
-            letterBox2Start = (ctx.canvas.width + ctx.canvas.height) / 2;
-            ctx.translate(0,letterBox1End)
-            let scaleFactor = ctx.canvas.width/logicalWidth;
+        else {
+            letterBox1End = (ctx.canvas.height)/2 - (ctx.canvas.width*aspectRatio) / 2;
+            letterBox2Start = (ctx.canvas.width*aspectRatio)/2 + (ctx.canvas.height) / 2;
+            ctx.translate(0, letterBox1End)
+            let scaleFactor = ctx.canvas.width / (logicalWidth / aspectRatio);
             ctx.scale(scaleFactor, scaleFactor)
         }
 
@@ -130,15 +133,21 @@ class Scene {
 
         ctx.fillStyle = "black"
 
-        if (ctx.canvas.width > ctx.canvas.height) {
+        // if (ctx.canvas.width > ctx.canvas.height) {
+        if (aspectRatio > windowAspectRatio) {
 
             ctx.fillRect(0, 0, letterBox1End, ctx.canvas.height);
             ctx.fillRect(letterBox2Start, 0, ctx.canvas.width, ctx.canvas.height);
         }
-        else{
+        else {
             ctx.fillRect(0, 0, ctx.canvas.width, letterBox1End);
             ctx.fillRect(0, letterBox2Start, ctx.canvas.width, ctx.canvas.height);
         }
+
+        //Draw some debugging help
+        // ctx.fillStyle = "white"
+        // ctx.fillText(aspectRatio, 10, 10)
+        // ctx.fillText(windowAspectRatio, 10, 30)
 
 
     }
