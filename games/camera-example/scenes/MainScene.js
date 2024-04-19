@@ -6,6 +6,8 @@ import "../components/CameraMoverComponent.js"
 class MainScene extends Scene {
   constructor() {
     super("blue")
+    this.aspectRatio = 1;
+    this.logicalWidth = 20;
     
   }
   start(ctx){
