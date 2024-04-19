@@ -17,6 +17,7 @@ class Scene {
     hasStarted = false;
 
     logicalWidth = -1;
+
     aspectRatio = -1;
 
     /**
@@ -40,13 +41,8 @@ class Scene {
      * @param {CanvasRenderingContext2D} ctx The current rendering context
      */
     _start(ctx) {
-
-
         if (!this.hasStarted) {
             this.hasStarted = true;
-
-            //TODO: Create a camera
-
 
             if (this.start)
                 this.start(ctx);
@@ -85,35 +81,26 @@ class Scene {
         // ctx.translate(-Camera.main.transform.x, -Camera.main.transform.y)
         // ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2)
 
-        let logicalWidth = this.logicalWidth
-        let aspectRatio = this.aspectRatio; //height/width
         let windowAspectRatio = ctx.canvas.height / ctx.canvas.width;
 
         let letterBox1End;
         let letterBox2Start;
 
-        if (this.logicalWidth > 0 && this.aspectRatio > 0) {
+        let usingLogicalCoordinates = this.logicalWidth > 0 && this.aspectRatio > 0
 
-
-            // if (ctx.canvas.width > ctx.canvas.height) {
-            if (aspectRatio > windowAspectRatio) {
-                // if (ctx.canvas.width > ctx.canvas.height) {
-                letterBox1End = (ctx.canvas.width) / 2 - (ctx.canvas.height / aspectRatio) / 2;
-                letterBox2Start = (ctx.canvas.width) / 2 + (ctx.canvas.height / aspectRatio) / 2;
+        if (usingLogicalCoordinates) {
+            if (this.aspectRatio > windowAspectRatio) {
+                letterBox1End = (ctx.canvas.width) / 2 - (ctx.canvas.height / this.aspectRatio) / 2;
+                letterBox2Start = (ctx.canvas.width) / 2 + (ctx.canvas.height / this.aspectRatio) / 2;
                 ctx.translate(letterBox1End, 0)
-                let scaleFactor = ctx.canvas.height / logicalWidth;
+                let scaleFactor = ctx.canvas.height / this.logicalWidth;
                 ctx.scale(scaleFactor, scaleFactor)
-                // letterBox1End = (ctx.canvas.width - ctx.canvas.height) / 2;
-                // letterBox2Start = (ctx.canvas.width + ctx.canvas.height) / 2;
-                // ctx.translate(letterBox1End, 0)
-                // let scaleFactor = ctx.canvas.height/logicalWidth;
-                // ctx.scale(scaleFactor, scaleFactor)
             }
             else {
-                letterBox1End = (ctx.canvas.height) / 2 - (ctx.canvas.width * aspectRatio) / 2;
-                letterBox2Start = (ctx.canvas.width * aspectRatio) / 2 + (ctx.canvas.height) / 2;
+                letterBox1End = (ctx.canvas.height) / 2 - (ctx.canvas.width * this.aspectRatio) / 2;
+                letterBox2Start = (ctx.canvas.width * this.aspectRatio) / 2 + (ctx.canvas.height) / 2;
                 ctx.translate(0, letterBox1End)
-                let scaleFactor = ctx.canvas.width / (logicalWidth / aspectRatio);
+                let scaleFactor = ctx.canvas.width / (this.logicalWidth / this.aspectRatio);
                 ctx.scale(scaleFactor, scaleFactor)
             }
         }
@@ -123,7 +110,6 @@ class Scene {
 
         //Call draw on all the game objects
         for (const gameObject of sortedLayers) {
-            //TODO: Setup blur if needed
             if (gameObject.layer == -1) {
                 //Glow
                 ctx.filter = "blur(2px)"
@@ -141,8 +127,8 @@ class Scene {
 
         ctx.fillStyle = "black"
 
-        // if (ctx.canvas.width > ctx.canvas.height) {
-        if (this.logicalWidth > 0 && this.aspectRatio > 0) {
+        //Actually draw the letterboxes
+        if (usingLogicalCoordinates) {
             if (this.aspectRatio > windowAspectRatio) {
 
                 ctx.fillRect(0, 0, letterBox1End, ctx.canvas.height);
@@ -153,13 +139,6 @@ class Scene {
                 ctx.fillRect(0, letterBox2Start, ctx.canvas.width, ctx.canvas.height);
             }
         }
-
-        //Draw some debugging help
-        // ctx.fillStyle = "white"
-        // ctx.fillText(aspectRatio, 10, 10)
-        // ctx.fillText(windowAspectRatio, 10, 30)
-
-
     }
 }
 
