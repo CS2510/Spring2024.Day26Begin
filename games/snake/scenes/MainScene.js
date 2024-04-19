@@ -11,18 +11,24 @@ import "../components/KeyboardComponent.js"
 /** The main scene in our game */
 class MainScene extends Scene {
   constructor() {
-      super("lightgray")
+    super("lightgray")
   }
-  start(ctx){
+  start(ctx) {
 
-      let circleGameObject = new GameObject("SnakeHeadGameObject")
-      circleGameObject.addComponent(new Circle())
-      circleGameObject.addComponent(new KeyboardComponent())
-      // circleGameObject.addComponent(new FireComponent())
-      
-      GameObject.instantiate(circleGameObject, 0, 0, 1)
-      
-      
+    let headGameObject = new GameObject("SnakeHeadGameObject")
+    headGameObject.addComponent(new Circle("green", "transparent"))
+    headGameObject.addComponent(new KeyboardComponent())
+    GameObject.instantiate(headGameObject, 100, 100, 5)
+
+    let bodyGameObject = new GameObject("SnakeBodyGameObject")
+    bodyGameObject.addComponent(new Rectangle("green", "transparent"))
+    GameObject.instantiate(bodyGameObject, 100, 90, 10, 10);  
+    
+    headGameObject.getComponent("KeyboardComponent").nextBodyPart = bodyGameObject;
+
+
+
+
   }
 }
 
