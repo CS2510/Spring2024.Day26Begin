@@ -82,7 +82,18 @@ class Engine {
   }
 
   /** Setup the game **/
-  static setup() {
+  static setup(name = "") {
+    if(name != "")
+      document.title = name
+
+    document.body.style.margin = "0px"
+    document.body.style.overflow = "hidden"
+    document.body.style.backgroundColor = "black"
+
+    let canvas = document.createElement("canvas")
+    canvas.id = "canv"
+    document.body.appendChild(canvas);
+
     document.addEventListener("keydown", Input.keydown)
     document.addEventListener("keyup", Input.keyup)
 
