@@ -78,8 +78,7 @@ class Scene {
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
         ctx.save()
-        // ctx.translate(-Camera.main.transform.x, -Camera.main.transform.y)
-        // ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2)
+        
 
         let windowAspectRatio = ctx.canvas.height / ctx.canvas.width;
 
@@ -104,6 +103,10 @@ class Scene {
                 ctx.scale(scaleFactor, scaleFactor)
             }
         }
+
+        ctx.scale(Camera.main.transform.scaleX, Camera.main.transform.scaleY)
+        ctx.translate(-Camera.main.transform.x, -Camera.main.transform.y)
+        //ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2)
 
         let sortedLayers = [...this.gameObjects]
         sortedLayers = sortedLayers.sort((a, b) => a.layer - b.layer)
