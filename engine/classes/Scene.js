@@ -20,6 +20,9 @@ class Scene {
 
     aspectRatio = -1;
 
+    logicalWidthViewWidthInPixels = -1
+    logicalWidthViewHeightInPixels = -1
+
     /**
      * Create a scene with the given background color.
      * 
@@ -94,6 +97,9 @@ class Scene {
                 ctx.translate(letterBox1End, 0)
                 let scaleFactor = ctx.canvas.height / this.logicalWidth;
                 ctx.scale(scaleFactor, scaleFactor)
+
+                this.logicalWidthViewWidthInPixels = letterBox2Start - letterBox1End;
+                this.logicalWidthViewHeightInPixels = ctx.canvas.height;
             }
             else {
                 letterBox1End = (ctx.canvas.height) / 2 - (ctx.canvas.width * this.aspectRatio) / 2;
@@ -101,6 +107,9 @@ class Scene {
                 ctx.translate(0, letterBox1End)
                 let scaleFactor = ctx.canvas.width / (this.logicalWidth / this.aspectRatio);
                 ctx.scale(scaleFactor, scaleFactor)
+
+                this.logicalWidthViewWidthInPixels = ctx.canvas.width;
+                this.logicalWidthViewHeightInPixels = letterBox2Start - letterBox1End;
             }
         }
 

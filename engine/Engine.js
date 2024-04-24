@@ -99,6 +99,8 @@ class Engine {
 
     document.addEventListener("mousemove", Input.mousemove)
     document.addEventListener("mouseup", Input.mouseup);
+    document.addEventListener("mousedown", Input.mousedown);
+    document.addEventListener("wheel", Input.wheel);
 
 
     //In the background, create a thread and call
