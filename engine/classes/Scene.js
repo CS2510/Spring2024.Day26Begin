@@ -23,6 +23,9 @@ class Scene {
     logicalWidthViewWidthInPixels = -1
     logicalWidthViewHeightInPixels = -1
 
+    letterBox1End = 0;
+    letterBox2Start = 0;
+
     /**
      * Create a scene with the given background color.
      * 
@@ -81,35 +84,34 @@ class Scene {
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
         ctx.save()
-        
+
 
         let windowAspectRatio = ctx.canvas.height / ctx.canvas.width;
 
-        let letterBox1End;
-        let letterBox2Start;
+
 
         let usingLogicalCoordinates = this.logicalWidth > 0 && this.aspectRatio > 0
 
         if (usingLogicalCoordinates) {
             if (this.aspectRatio > windowAspectRatio) {
-                letterBox1End = (ctx.canvas.width) / 2 - (ctx.canvas.height / this.aspectRatio) / 2;
-                letterBox2Start = (ctx.canvas.width) / 2 + (ctx.canvas.height / this.aspectRatio) / 2;
-                ctx.translate(letterBox1End, 0)
+                this.letterBox1End = (ctx.canvas.width) / 2 - (ctx.canvas.height / this.aspectRatio) / 2;
+                this.letterBox2Start = (ctx.canvas.width) / 2 + (ctx.canvas.height / this.aspectRatio) / 2;
+                ctx.translate(this.letterBox1End, 0)
                 let scaleFactor = ctx.canvas.height / this.logicalWidth;
                 ctx.scale(scaleFactor, scaleFactor)
 
-                this.logicalWidthViewWidthInPixels = letterBox2Start - letterBox1End;
+                this.logicalWidthViewWidthInPixels = this.letterBox2Start - this.letterBox1End;
                 this.logicalWidthViewHeightInPixels = ctx.canvas.height;
             }
             else {
-                letterBox1End = (ctx.canvas.height) / 2 - (ctx.canvas.width * this.aspectRatio) / 2;
-                letterBox2Start = (ctx.canvas.width * this.aspectRatio) / 2 + (ctx.canvas.height) / 2;
-                ctx.translate(0, letterBox1End)
+                this.letterBox1End = (ctx.canvas.height) / 2 - (ctx.canvas.width * this.aspectRatio) / 2;
+                this.letterBox2Start = (ctx.canvas.width * this.aspectRatio) / 2 + (ctx.canvas.height) / 2;
+                ctx.translate(0, this.letterBox1End)
                 let scaleFactor = ctx.canvas.width / (this.logicalWidth / this.aspectRatio);
                 ctx.scale(scaleFactor, scaleFactor)
 
                 this.logicalWidthViewWidthInPixels = ctx.canvas.width;
-                this.logicalWidthViewHeightInPixels = letterBox2Start - letterBox1End;
+                this.logicalWidthViewHeightInPixels = this.letterBox2Start - this.letterBox1End;
             }
         }
 
@@ -143,13 +145,18 @@ class Scene {
         if (usingLogicalCoordinates) {
             if (this.aspectRatio > windowAspectRatio) {
 
-                ctx.fillRect(0, 0, letterBox1End, ctx.canvas.height);
-                ctx.fillRect(letterBox2Start, 0, ctx.canvas.width, ctx.canvas.height);
+                ctx.fillRect(0, 0, this.letterBox1End, ctx.canvas.height);
+                ctx.fillRect(this.letterBox2Start, 0, ctx.canvas.width, ctx.canvas.height);
             }
             else {
-                ctx.fillRect(0, 0, ctx.canvas.width, letterBox1End);
-                ctx.fillRect(0, letterBox2Start, ctx.canvas.width, ctx.canvas.height);
+                ctx.fillRect(0, 0, ctx.canvas.width, this.letterBox1End);
+                ctx.fillRect(0, this.letterBox2Start, ctx.canvas.width, ctx.canvas.height);
             }
+        }
+
+        for (const gameObject of this.gameObjects) {
+            if (gameObject.drawUI)
+                gameObject.drawUI(ctx);
         }
     }
 }

@@ -94,6 +94,14 @@ class GameObject {
         }
     }
 
+    drawUI(ctx) {
+        for (let component of this.components) {
+            if (component.drawUI) {
+                component.drawUI(ctx)
+            }
+        }
+    }
+
     getComponent(name){
         return this.components.find(c=>c.constructor.name == name);
     }
