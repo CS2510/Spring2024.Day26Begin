@@ -7,20 +7,35 @@ class CameraMoverComponent extends Component {
   update(ctx) {
 
     let scene = Engine.currentScene;
-    
-    
+    let camera = Camera.main;
+
+    let cameraZoom = camera.transform.scaleX
+
     let logicalWidthNoZoom = scene.logicalWidth
-    let logicalHeightNoZoom = logicalWidthNoZoom/scene.aspectRatio
+    let logicalHeightNoZoom = 1
+
+    let logicalWidthZoomed = 1
+    let logicalHeightZoomed = 1;
+
+    let cameraX = camera.transform.x;
+    let cameraY = camera.transform.y;
 
 
-    let screenXWOLetterBoxing = Input.mousePosition.x
-    let screenYWOLetterBoxing = Input.mousePosition.y
 
-    let screenXWithLetterBoxing = screenXWOLetterBoxing - scene.letterBox1End;
-    let screenYWithLetterBoxing = screenYWOLetterBoxing;
+    let screenXWOLetterBoxing = 1
+    let screenYWOLetterBoxing = 1
 
-    let cameraXAsPercent = screenXWithLetterBoxing/scene.logicalWidthViewWidthInPixels;
-    let cameraYAsPercent = screenYWithLetterBoxing/scene.logicalWidthViewHeightInPixels;
+    let screenXWithLetterBoxing = 1;
+    let screenYWithLetterBoxing = 1;
+
+    let cameraXAsPercent = 1;
+    let cameraYAsPercent =1;
+
+    let worldXWOZoom = 1;
+    let worldYWOZoom = 1;
+
+    let worldXWithZoom = 1;
+    let worldYWithZoom = 1;
 
 
     //Do the actual movement
@@ -29,17 +44,16 @@ class CameraMoverComponent extends Component {
       let cameraZoom = Camera.main.transform.scaleX;
 
       if (Input.mouseDown) {
-        let x = Input.mousePosition.x;
-        let y = Input.mousePosition.y;
+        let x = screenXWOLetterBoxing;
+        let y = screenYWOLetterBoxing;
 
         let diffX = x - this.lastMouseX
         let diffY = y - this.lastMouseY;
 
-        let logicalWidth = Engine.currentScene.logicalWidth;
-        let logicalHeight = logicalWidth / Engine.currentScene.aspectRatio
+        
 
-        Camera.main.transform.x -= (diffX * logicalWidth / Engine.currentScene.logicalWidthViewWidthInPixels) / cameraZoom;
-        Camera.main.transform.y -= (diffY * logicalHeight / Engine.currentScene.logicalWidthViewHeightInPixels) / cameraZoom;
+        Camera.main.transform.x -= (diffX * logicalWidthNoZoom / Engine.currentScene.logicalWidthViewWidthInPixels) / cameraZoom;
+        Camera.main.transform.y -= (diffY * logicalHeightNoZoom / Engine.currentScene.logicalWidthViewHeightInPixels) / cameraZoom;
       }
 
       //Now for the zooming
@@ -66,7 +80,7 @@ class CameraMoverComponent extends Component {
         //Now keep the mouse in the same place
         let cameraDeltaX = cameraXAsPercent*logicalWidthNoZoom*(1/cameraZoom1-1/cameraZoom)
         let cameraDeltaY = cameraYAsPercent*logicalHeightNoZoom*(1/cameraZoom1-1/cameraZoom)
-        
+
         Camera.main.transform.x += cameraDeltaX;
         Camera.main.transform.y += cameraDeltaY;
       }

@@ -100,8 +100,8 @@ class Scene {
                 let scaleFactor = ctx.canvas.height / this.logicalWidth;
                 ctx.scale(scaleFactor, scaleFactor)
 
-                this.logicalWidthViewWidthInPixels = this.letterBox2Start - this.letterBox1End;
-                this.logicalWidthViewHeightInPixels = ctx.canvas.height;
+                // this.logicalWidthViewWidthInPixels = this.letterBox2Start - this.letterBox1End;
+                // this.logicalWidthViewHeightInPixels = ctx.canvas.height;
             }
             else {
                 this.letterBox1End = (ctx.canvas.height) / 2 - (ctx.canvas.width * this.aspectRatio) / 2;
@@ -110,8 +110,8 @@ class Scene {
                 let scaleFactor = ctx.canvas.width / (this.logicalWidth / this.aspectRatio);
                 ctx.scale(scaleFactor, scaleFactor)
 
-                this.logicalWidthViewWidthInPixels = ctx.canvas.width;
-                this.logicalWidthViewHeightInPixels = this.letterBox2Start - this.letterBox1End;
+                // this.logicalWidthViewWidthInPixels = ctx.canvas.width;
+                // this.logicalWidthViewHeightInPixels = this.letterBox2Start - this.letterBox1End;
             }
         }
 
